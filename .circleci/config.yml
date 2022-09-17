@@ -193,10 +193,10 @@ jobs:
           command: |
             apk add --update ansible
 
-      - run:
-          name: Install dependencies4
-          command: |
-            yum install -y tar gzip
+      # - run:
+      #     name: Install dependencies4
+      #     command: |
+      #       yum install -y tar gzip
 
       - run:
           name: Configure server
