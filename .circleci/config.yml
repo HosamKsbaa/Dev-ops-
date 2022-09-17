@@ -180,21 +180,28 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
-          name: Install dependencies
+          name: Install dependencies1
           command: |
             python3 -m pip install --user ansible
-            apk add --update ansible 
+      - run:
+          name: Install dependencies2
+          command: |
+            apk add --update ansible
+      - run:
+          name: Install dependencies3
+          command: |
             pip install awscli
+
+      - run:
+          name: Install dependencies4
+          command: |
             yum install -y tar gzip
 
-
-         
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-         
       - destroy-environment
 
 #   run-migrations:
