@@ -184,10 +184,10 @@ jobs:
           command: |
             pip install awscli
 
-      - run:
-          name: Install dependencies1
-          command: |
-            pip install  ansible
+      # - run:
+      #     name: Install dependencies1
+      #     command: |
+      #       pip install  ansible
       - run:
           name: Install dependencies2
           command: |
