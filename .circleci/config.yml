@@ -185,12 +185,14 @@ jobs:
             yum install -y tar gzip
             python3 -m pip install --user ansible
             apk add --update ansible 
+            pip install awscli
 
          
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i inventory.txt main4.yml
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
          
       - destroy-environment
 
