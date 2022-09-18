@@ -254,7 +254,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Name,Values=backend-${ID}" --output text >> inventory )
+            export BACKEND_IP=$(aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Name,Values=backend-${ID}" --output text >> cd .circleci/ansible/inventory.txt )
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -291,6 +291,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            export BACKEND_IP=$(aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Name,Values=backend-${ID}" --output text >> cd .circleci/ansible/inventory.txt )
             cd backend
             npm i
             npm run build
