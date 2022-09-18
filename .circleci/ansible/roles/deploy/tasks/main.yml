@@ -4,12 +4,12 @@
 - name: Executing node
   unarchive:
     src: artifact.tar.gz
-    dest: ~/backend-app
+    dest: ~/backend
 
 
 - name: "Executing node"
   shell: |
-    cd ~/backend-app
+    cd ~/backend
 - name: "Executing node1"
   shell: |
       npm install
