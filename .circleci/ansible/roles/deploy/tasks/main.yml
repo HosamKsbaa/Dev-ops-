@@ -1,22 +1,33 @@
-
 ---
+- name: "Executing node"
+  file:
+    path: ~/backend-app
+    state: directory
 
-- name: Executing node
+- name: "Executing node"
   unarchive:
     src: artifact.tar.gz
-    dest: ~/backend
+    dest: ~/backend-app
 
 
 - name: "Executing node"
   shell: |
-    cd ~/backend
-- name: "Executing node1"
+    cd ~/backend-app
+    npm i
+- name: "Executing node"
   shell: |
-      npm install
-- name: "Executing node2"
-  shell: |
-    pm2 stop default
-- name: "Executing node3"
-  shell: |
-    pm2 start npm -- start
+    cd ~/backend-app/dist
+    cd ../
+    npm ه
+    npm run build
+    sudo npm install forever -g
+    sudo npm install ts-node -g
+    forever start -c "ts-node -r tsconfig-paths/register -r dotenv/config src/main.ts" ./
     
+
+
+
+- name: "Executing node"
+  become: true
+  shell: |
+    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
