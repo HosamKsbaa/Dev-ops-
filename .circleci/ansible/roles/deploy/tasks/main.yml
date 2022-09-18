@@ -1,13 +1,8 @@
----
-- name: "Executing node"
-  file:
-    path: ~/backend-app
-    state: directory
 
 - name: "Executing node"
   unarchive:
     src: artifact.tar.gz
-    dest: ~/backend-app
+    dest: /home/ubuntu/
 
 
 - name: "Executing node"
