@@ -7,9 +7,16 @@
 #     dest: ~/backend-app
 
 
-- name: "Executing node"
+# - name: "Executing node"
+#   shell: |
+#     cd ~/backend-app
+- name: "Executing node1"
   shell: |
-    cd ~/backend-app
-    npm install
+      npm install
+- name: "Executing node2"
+  shell: |
     pm2 stop default
+- name: "Executing node3"
+  shell: |
     pm2 start npm -- start
+    
