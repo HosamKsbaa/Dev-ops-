@@ -236,13 +236,15 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
+
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apt-get update
+            apt -y install awscli
       - run:
           name: Get backend url
           command: |
@@ -262,22 +264,23 @@ jobs:
       - destroy-environment
 
                     
-  deploy-backend:
-    docker:
-      # Docker image here that supports Ansible
-    steps:
-      - checkout
-      - add_ssh_keys:
-                fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]      # attach workspace
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-      - run:
-          name: Deploy backend
-          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+  # deploy-backend:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #               fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]      # attach workspace
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apt-get update
+  #           apt -y install awscli
+  #     - run:
+  #         name: Deploy backend
+  #         command: |
+  #           # your code here
+  #     # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
 #     docker:
@@ -359,8 +362,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
