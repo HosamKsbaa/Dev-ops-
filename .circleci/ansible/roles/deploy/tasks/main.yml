@@ -1,15 +1,15 @@
 
 ---
 
-# - name: Executing node
-#   unarchive:
-#     src: artifact.tar.gz
-#     dest: ~/backend-app
+- name: Executing node
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend-app
 
 
-# - name: "Executing node"
-#   shell: |
-#     cd ~/backend-app
+- name: "Executing node"
+  shell: |
+    cd ~/backend-app
 - name: "Executing node1"
   shell: |
       npm install
