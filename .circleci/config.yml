@@ -213,7 +213,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update
+            apk add --update ansible
             apt -y install awscli
       - run:
           name: Run migrations
@@ -243,7 +243,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update
+            apk add --update ansible
             apt -y install awscli
       - run:
           name: Get backend url
@@ -274,7 +274,7 @@ jobs:
   #     - run:
   #         name: Install dependencies
   #         command: |
-  #           apt-get update
+  #          apk add --update ansible
   #           apt -y install awscli
   #     - run:
   #         name: Deploy backend
