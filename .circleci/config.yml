@@ -301,12 +301,14 @@ jobs:
 
   smoke-test:
     docker:
-      # Lightweight Docker image 
+      - image: python:3.7-alpine3.11
     steps:
-      # Checkout code from git
-      # - run:
-      #     name: Install dependencies
-      #     command: |
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+              pip install awscli
+
       - run:
           name: Get backend url
           command: |
@@ -334,6 +336,7 @@ jobs:
               return 1
             fi
       - destroy-environment
+
 
 #   cloudfront-update:
 #     docker:
