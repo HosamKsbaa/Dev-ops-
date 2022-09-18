@@ -266,7 +266,7 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive      
       - destroy-environment
 #12
-     #if this dosn't work i am goint to sleep  aaaaaaaaaaaaaaaaaaaaaa               
+     #if this dosn't work i am goint to sleep  aaaaaaaaaaaaaaaaaaaaaa               dasd
   # deploy-backend:
   #   docker:
   #     - image: circleci/node:13.8.0
@@ -346,23 +346,23 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
       - run-migrations:
-          requires: [configure-infrastructure]
+          # requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
       # - deploy-backend:
