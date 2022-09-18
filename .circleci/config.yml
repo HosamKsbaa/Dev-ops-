@@ -330,13 +330,6 @@ jobs:
             unzip awscli-bundle.zip
             ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             apk add --update nodejs npm
-
-
-      - run:
-          name: Get backend url
-          command: |
-              export API_URL="http://${BACKEND_IP}:3030"
-              echo "${API_URL}"
       - run:
           name: Backend smoke test.
           command: |
