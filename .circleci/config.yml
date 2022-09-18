@@ -254,7 +254,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=backend-${ID}" --output text >> inventory )
+            export BACKEND_IP=$(aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Name,Values=backend-${ID}" --output text >> inventory )
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
