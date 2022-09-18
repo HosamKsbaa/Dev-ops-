@@ -1,4 +1,5 @@
 
+
 - name: "Executing node"
   unarchive:
     src: artifact.tar.gz
