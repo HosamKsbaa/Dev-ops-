@@ -272,8 +272,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
-        user: root
+      - image: python:3.7-alpine3.11
 
     steps:
       - checkout
@@ -282,9 +281,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update
+            apk add --no-cache aws-cli
 
-            apt -y install awscli
       - run:
           name: Deploy backend
           command: |
@@ -316,15 +314,15 @@ jobs:
           command: |
               export API_URL="http://${BACKEND_IP}:3030"
               echo "${API_URL}"
-      - run:
-          name: Backend smoke test.
-          command: |
-              if curl "${API_URL}/api/status" | grep "ok"
-              then
-                  return 0
-              else
-                  return 1
-              fi      - run:
+      # - run:
+      #     name: Backend smoke test.
+      #     command: |
+      #         if curl "${API_URL}/api/status" | grep "ok"
+      #         then
+      #             return 0
+      #         else
+      #             return 1
+      #         fi      - run:
       - run:
           name: Frontend smoke test.
           command: |
