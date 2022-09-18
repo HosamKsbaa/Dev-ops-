@@ -286,45 +286,31 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
-
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
-      - add_ssh_keys:
-                fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]
       - attach_workspace:
-          at: ~/     # attach workspace
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-            apk add python curl
-            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-            unzip awscli-bundle.zip
-            ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-
             apk add --update ansible aws-cli nodejs npm tar gzip curl
-
-
-#
       - run:
           name: Deploy backend
           command: |
-            export BACKEND_IP=$(aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text >>  .circleci/ansible/inventory.txt )
-                                aws --region us-east-1  ec2 describe-instances    --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:project,Values=udapeople" --output text >>  .circleci/ansible/inventory
             cd backend
             npm i
             npm run build
             cd ..
             # Zip the directory
-            tar -C backend -czvf artifact.tar.gz  .
+            tar -C backend -czvf artifact.tar.gz .
             mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz .circleci/ansible/roles/deploy/files/artifact.tar.gz
-
             cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is -------"
+            ls
+            echo "Contents  of the inventory.txt file is ------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-
       - destroy-environment
 
   smoke-test:
@@ -432,12 +418,12 @@ workflows:
 
       - run-migrations:
           requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:

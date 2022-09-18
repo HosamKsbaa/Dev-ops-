@@ -1,4 +1,21 @@
+---
 - name:  "Executing node"
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "Executing node"
+  become: true
+  apt:
+    upgrade: yes
+
+
+- name: "Executing node"
+  become: true
+  apt:
+    autoremove: yes
+
+- name: "Executing node"
   become: true
   apt:
     name: ["nodejs", "npm"]
