@@ -2,9 +2,10 @@ version: 2.1
 
 commands:
   destroy-environment:
+    docker:
+      - image: amazon/aws-cli
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here   
+
     steps:
       - run:
           name: Destroy environments
