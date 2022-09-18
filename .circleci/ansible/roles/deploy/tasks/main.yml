@@ -7,22 +7,10 @@
 
 - name: "Executing node"
   shell: |
-    cd ~/backend-app
-    npm i
-- name: "Executing node"
-  shell: |
-    cd ~/backend-app/dist
-    cd ../
-    npm ه
-    npm run build
-    sudo npm install forever -g
-    sudo npm install ts-node -g
-    forever start -c "ts-node -r tsconfig-paths/register -r dotenv/config src/main.ts" ./
+    npm install
+    pm2 stop default
+    pm2 start npm -- start
     
 
 
 
-- name: "Executing node"
-  become: true
-  shell: |
-    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
