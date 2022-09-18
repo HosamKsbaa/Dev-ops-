@@ -284,6 +284,8 @@ jobs:
             unzip awscli-bundle.zip
             ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             apk add --update nodejs npm
+            apk add --update ansible 
+
 
       - run:
           name: Deploy backend
