@@ -397,10 +397,8 @@ jobs:
       - destroy-environment
 
   cleanup:
+
     docker:
-      - image: amazon/aws-cli
-    steps:
-          docker:
       - image: python:3.7-alpine3.16
     steps:
       - checkout
