@@ -240,6 +240,10 @@ jobs:
                 # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                 # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
                 curl https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}  -d '1'
+                echo "Migration successful"
+              else
+                curl https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}  -d '0'
+               echo "Migration failed"
             fi
 
       # - run:
@@ -469,13 +473,13 @@ workflows:
 
       - run-migrations:
           requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]
