@@ -391,7 +391,7 @@ jobs:
               --tags project=udapeople
       - destroy-environment
 
-cleanup:
+  cleanup:
     docker:
       - image: amazon/aws-cli
     steps:
