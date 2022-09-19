@@ -1,49 +1,23 @@
----
-- name:  "Executing node"
+- name: upgrade and  update packages
   become: true
-  apt:
-    update_cache: yes
-
-- name: "Executing node"
-  become: true
-  apt:
-    upgrade: yes
-
-
-- name: "Executing node"
-  become: true
-  apt:
-    autoremove: yes
-
-- name: "Executing node"
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
-
-- name: "Executing node"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-- name: "Executing node"
-  become: true
+  apt: 
+   update_cache: yes
+- name:  create backend directory
+  file:
+    path: ~/backend
+    state: directory
+     
+- name: "unarchive backend directory"
   unarchive:
-    src: files/artifact.tar.gz
-    dest: .
+    src: artifact.tar.gz
+    dest: ~/backend
 
-- name: "Executing node"
-  become: true
-  shell: |
-    pm2 stop all
-    pm2 start npm -- start
+- name: "install node dependencies"
+  command: npm i 
+  args:
+    chdir: ~/backend
 
-
-- name:  start app
+- name: install ans start app
   command:  pm2 start main.js
   args:
     chdir: ~/backend/dist
