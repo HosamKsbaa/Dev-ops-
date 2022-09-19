@@ -3,7 +3,6 @@ version: 2.1
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
       # Add parameter here   
     steps:
       - run:
@@ -16,27 +15,25 @@ commands:
 
 
 revert-migrations:
-description: Revert the last migration
-parameters:
-    workflow_id:
-        type: string      
-steps:
-    - run:
-        name: Revert migrations
-        when: on_fail
-        command: |
-            # Your Memstash or kvdb.io GET URL code goes here
-            # Example: Memstash.io
-            SUCCESS=$(curl -H "token: e52b52de-ee26-41a5-86e8-e8dcc3d995a5" --request GET https://api.memstash.io/values/migration_<< parameters.workflow_id >>)
-            # Example: kvdb.io
-            SUCCESS=$(curl --insecure  https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_<< parameters.workflow_id >>)
-            # Logic for reverting the database state
-            if (( $SUCCESS == 1 ));
-            then
-                cd ~/project/backend
-                npm install
-                npm run migration:revert
-            fi
+  description: Revert the last migration
+   
+  steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+              # Your Memstash or kvdb.io GET URL code goes here
+              # Example: Memstash.io
+              SUCCESS=$(curl -H "token: e52b52de-ee26-41a5-86e8-e8dcc3d995a5" --request GET https://api.memstash.io/values/migration_<< parameters.workflow_id >>)
+              # Example: kvdb.io
+              SUCCESS=$(curl --insecure  https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_<< parameters.workflow_id >>)
+              # Logic for reverting the database state
+              if (( $SUCCESS == 1 ));
+              then
+                  cd ~/project/backend
+                  npm install
+                  npm run migration:revert
+              fi
           
 jobs:
   build-frontend:
