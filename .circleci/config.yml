@@ -229,7 +229,9 @@ jobs:
             npm install
             # Run and save the migration output
             npm run migrations > migrations_dump.txt
+            echo "Migrations output:"
             cat migrations_dump.txt
+            echo "Migrations output end :"
           no_output_timeout: 30m
 
 
