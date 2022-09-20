@@ -1,1 +1,8 @@
+URL01
 https://github.com/HosamKsbaa/Dev-ops-
+URL02 & URL03
+http://udapeople-d5ee04e.s3-website-us-east-1.amazonaws.com/#/employees
+URL04
+ec2-3-83-12-190.compute-1.amazonaws.com
+URL05
+http://ec2-44-211-146-159.compute-1.amazonaws.com:9090/graph
