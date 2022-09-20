@@ -412,44 +412,37 @@ jobs:
       - revert-migrations
 
   cleanup:
-
     docker:
-      - image: python:3.7-alpine3.16
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
-      - add_ssh_keys:
-                fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible aws-cli nodejs npm tar gzip curl
+            yum install -y tar gzip
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get old stack workflow id
           command: |
             # Fetch the Old workflow ID
             export OldWorkflowID=$(aws cloudformation \
-                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                    --no-paginate --output text| cut -d '-' -f 2)
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
             # Fetch the stack names          
-
-            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
-            echo Stack names: "${STACKS[@]}" 
-      - run:
-          name: Remove old stacks and files
-          command: |
-           if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            echo Stack names: "${STACKS[@]}"
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
-              #aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
             fi
-      - destroy-environment
       - revert-migrations
+      - destroy-environment 
 
 workflows:
   default:
