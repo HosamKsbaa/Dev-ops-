@@ -414,28 +414,28 @@ jobs:
               --tags project=udapeople
       - destroy-environment
       - revert-migrations
-#pre final job
-  # test:
-  #   docker:
-  #    - image: amazon/aws-cli
-  #   steps:
-  #     - checkout
+  test:
+    docker:
+     - image: amazon/aws-cli
+    steps:
+      - checkout
 
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #          yum update -y
-  #          yum install -y tar gzip
-  #          yum install -y python3
-  #     - attach_workspace:
-  #         at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+           yum update -y
+           yum install -y tar gzip
+           yum install -y python3
+      - attach_workspace:
+          at: ~/
      
-  #     - run:
-  #         name: Remove old stacks and files
-  #         command: |
-  #           export OldWorkflowID=$(aws cloudformation \
-  #             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-  #             --no-paginate --output text| cut -d '-' -f 2)
+      - run:
+          name: Remove old stacks and files
+          command: |
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text| cut -d '-' -f 2)
+            curl --insecure https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_${CIRCLE_WORKFLOW_ID:0:7}_OldWorkflowID  -d '${OldWorkflowID}'
   cleanup:
     docker:
      - image: amazon/aws-cli
@@ -453,6 +453,8 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
+            export OldWorkflowID=$(curl --insecure  https://kvdb.io/JuqqDRBt3ToGkyhLSjL6o/migration_${CIRCLE_WORKFLOW_ID:0:7}_OldWorkflowID)
+            echo ${OldWorkflowID}
             # export OldWorkflowID=$(aws cloudformation \
             #   list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             #   --no-paginate --output text| cut -d '-' -f 2)
@@ -475,35 +477,35 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend] 
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
-      # - test
+    #   - build-frontend
+    #   - build-backend
+    #   - test-frontend:
+    #       requires: [build-frontend]
+    #   - test-backend:
+    #       requires: [build-backend]
+    #   - scan-backend:
+    #       requires: [build-backend]
+    #   - scan-frontend:
+    #       requires: [build-frontend] 
+    #   - deploy-infrastructure:
+    #       requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+    #       filters:
+    #         branches:
+    #           only: [master]
+    #   - configure-infrastructure:
+    #       requires: [deploy-infrastructure]
+    #   - run-migrations:
+    #       requires: [configure-infrastructure]
+    #   - deploy-frontend:
+    #       requires: [run-migrations]
+    #   - deploy-backend:
+    #       requires: [run-migrations]
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
       # - cleanup:
-      #     requires: [test] aa zz
+      #     requires: [cloudfront-update]
+      - test
+      - cleanup:
+          requires: [test] 
