@@ -436,8 +436,8 @@ jobs:
             then
               echo "Removing old stacks and files"
             #  aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
-              aws --region us-east-1 cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws --region us-east-1 cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              aws --region us-east-1 cloudformation delete-stack --stack-name "udapeople-backend-f0f3949"
+              aws --region us-east-1 cloudformation delete-stack --stack-name "udapeople-frontend-bb96f0d"
               echo "done"
 
             fi
