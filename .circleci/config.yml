@@ -367,7 +367,7 @@ jobs:
               echo "${API_URL}/api/status"
               if curl "${API_URL}/api/status" | grep "ok"
               then
-                  return  0
+                  return  1
               else
                   return 1
               fi      
