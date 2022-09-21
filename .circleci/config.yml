@@ -403,7 +403,9 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
-
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text| cut -d '-' -f 2)
             # Change the initial stack name, as applicable to you
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
@@ -413,27 +415,27 @@ jobs:
       - destroy-environment
       - revert-migrations
 
-  test:
-    docker:
-     - image: amazon/aws-cli
-    steps:
-      - checkout
+  # test:
+  #   docker:
+  #    - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
 
-      - run:
-          name: Install dependencies
-          command: |
-           yum update -y
-           yum install -y tar gzip
-           yum install -y python3
-      - attach_workspace:
-          at: ~/
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #          yum update -y
+  #          yum install -y tar gzip
+  #          yum install -y python3
+  #     - attach_workspace:
+  #         at: ~/
      
-      - run:
-          name: Remove old stacks and files
-          command: |
-            export OldWorkflowID=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-              --no-paginate --output text| cut -d '-' -f 2)
+  #     - run:
+  #         name: Remove old stacks and files
+  #         command: |
+  #           export OldWorkflowID=$(aws cloudformation \
+  #             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+  #             --no-paginate --output text| cut -d '-' -f 2)
   cleanup:
     docker:
      - image: amazon/aws-cli
