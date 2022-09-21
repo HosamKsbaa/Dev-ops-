@@ -489,4 +489,4 @@ workflows:
       #     requires: [cloudfront-update]
       - test
       - cleanup:
-          requires: [cloudfront-update]
+          requires: [test]
