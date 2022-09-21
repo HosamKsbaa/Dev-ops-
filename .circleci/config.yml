@@ -506,4 +506,4 @@ workflows:
           requires: [cloudfront-update]
       # - test
       # - cleanup:
-      #     requires: [test] aa
+      #     requires: [test] aa zz
