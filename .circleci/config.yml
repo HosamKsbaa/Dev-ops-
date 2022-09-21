@@ -415,11 +415,17 @@ jobs:
 
   test:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
       - attach_workspace:
           at: ~/
+      - add_ssh_keys:
+                fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible aws-cli nodejs npm tar gzip curl
       - run:
           name: Remove old stacks and files
           command: |
@@ -428,11 +434,17 @@ jobs:
               --no-paginate --output text| cut -d '-' -f 2)
   cleanup:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
       - attach_workspace:
           at: ~/
+      - add_ssh_keys:
+                fingerprints: ["59:a4:7b:43:53:7d:2d:ba:f6:81:67:d3:e6:ff:0f:43"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible aws-cli nodejs npm tar gzip curl
       - run:
           name: Remove old stacks and files
           command: |
