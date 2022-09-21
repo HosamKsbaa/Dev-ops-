@@ -428,7 +428,7 @@ jobs:
             # cat ~/OldWorkflowID.txt
             # export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             # echo OldWorkflowID: "${OldWorkflowID}"
-            export STACKS=($(aws --region us_east_1 cloudformation list-stacks \
+            export STACKS=($(aws --region us-east-1 cloudformation list-stacks \
                 --query "StackSummaries[*].StackName" \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
