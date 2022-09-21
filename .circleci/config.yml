@@ -418,14 +418,15 @@ jobs:
      - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
+
       - run:
           name: Install dependencies
           command: |
            yum update -y
            yum install -y tar gzip
            yum install -y python3
+      - attach_workspace:
+          at: ~/
      
       - run:
           name: Remove old stacks and files
@@ -438,15 +439,15 @@ jobs:
      - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
+
       - run:
           name: Install dependencies
           command: |
            yum update -y
            yum install -y tar gzip
            yum install -y python3
-     
+      - attach_workspace:
+          at: ~/
       - run:
           name: Remove old stacks and files
           command: |
